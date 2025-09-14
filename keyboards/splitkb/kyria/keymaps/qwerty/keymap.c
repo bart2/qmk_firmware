@@ -83,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [2] = LAYOUT(
 _______, SGUI(KC_4), LGUI(KC_LBRC), KC_UP, LGUI(KC_RBRC), KC_HOME,                                            _______, _______, _______, _______, _______, TBACKTICK,
-LGUI(KC_Z), KC_RSFT, KC_LEFT, KC_DOWN, KC_RGHT,  KC_END,                                                      _______, _______, _______, _______, _______, _______,
+LGUI(KC_B), KC_RSFT, KC_LEFT, KC_DOWN, KC_RGHT,  KC_END,                                                      _______, _______, _______, _______, _______, _______,
 _______, KC_LGUI, LALT(KC_LEFT), KC_DOWN, LALT(KC_RGHT), _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______, _______,
                                        _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______
     ),
