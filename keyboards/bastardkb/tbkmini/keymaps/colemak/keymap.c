@@ -55,12 +55,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LGUI_T(KC_Z):
-            return false;
-        default:
+        case LCTL_T(KC_Z):
             return true;
+        default:
+            return false;
     }
 };
 
@@ -72,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_BSPC,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                         KC_M,    KC_N,    KC_E,    KC_I,    KC_O, KC_ENT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, LGUI_T(KC_Z), LALT_T(KC_X), KC_C, KC_D, KC_V,                        KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, _______,
+      KC_LGUI, LCTL_T(KC_Z), LALT_T(KC_X), KC_C, KC_D, KC_V,                        KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                       LCTL_T(KC_TAB), KC_SPC, MO(2),  MO(3), OSM(MOD_LSFT), OSL(1)
                                       //`--------------------------'  `--------------------------'
@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [2] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-     _______, SGUI(KC_4), LGUI(KC_LBRC), KC_UP, LGUI(KC_RBRC), KC_HOME,            RESET, _______, _______, _______, _______, TBACKTICK,
+     _______, SGUI(KC_4), LGUI(KC_LBRC), KC_UP, LGUI(KC_RBRC), KC_HOME,            QK_BOOT, _______, _______, _______, _______, TBACKTICK,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_RSFT, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
