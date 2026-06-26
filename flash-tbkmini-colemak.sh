@@ -9,7 +9,7 @@
 # Usage: ./flash-tbkmini-colemak.sh
 set -euo pipefail
 
-KB="bastardkb/tbkmini/promicro"
+KB="bastardkb/tbkmini/v1/elitec"
 KM="colemak"
 MCU="atmega32u4"
 DFU_USB="03eb:2ff4"   # Atmel atmega32u4 DFU bootloader
@@ -37,19 +37,30 @@ if [[ ! -f "$HEX" ]]; then
     exit 1
 fi
 
-# 2. Wait for the board to be in bootloader mode
-echo ">> Put the keyboard into bootloader mode (reset it) ..."
-until lsusb | grep -qi "$DFU_USB"; do
+# 2/3. Flash each half. This is a split keyboard, so both halves must be
+# flashed with the same firmware. Reset one half at a time when prompted.
+flash_one() {
+    local label="$1"
+    echo ">> Put the $label half into bootloader mode (reset it) ..."
+    until lsusb | grep -qi "$DFU_USB"; do
+        sleep 0.5
+    done
+    echo ">> DFU bootloader detected."
+    # needs root for raw USB access; remove sudo if you have udev rules
+    echo ">> Erasing ..."
+    sudo dfu-programmer "$MCU" erase --force
+    echo ">> Flashing $HEX ..."
+    sudo dfu-programmer "$MCU" flash "$HEX"
+    echo ">> Resetting ..."
+    sudo dfu-programmer "$MCU" reset || true   # reset disconnects the device -> non-zero is normal
+    echo ">> $label half done."
+}
+
+flash_one "first"
+echo ">> Waiting for the first half to leave bootloader mode ..."
+while lsusb | grep -qi "$DFU_USB"; do
     sleep 0.5
 done
-echo ">> DFU bootloader detected."
+flash_one "second"
 
-# 3. Flash (needs root for raw USB access; remove sudo if you have udev rules)
-echo ">> Erasing ..."
-sudo dfu-programmer "$MCU" erase --force
-echo ">> Flashing $HEX ..."
-sudo dfu-programmer "$MCU" flash "$HEX"
-echo ">> Resetting ..."
-sudo dfu-programmer "$MCU" reset || true   # reset disconnects the device -> non-zero is normal
-
-echo ">> Done."
+echo ">> Done. Both halves flashed."
